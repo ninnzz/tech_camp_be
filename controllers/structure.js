@@ -61,7 +61,7 @@ structure = function(kiel){
 
 				db._instance().collection('structure',function(err,_collection) {
 					if(err){ kiel.response(req, res, {data : err}, 500); return;}
-					_collection.insert({_id:id,value:spost},function(err,inserted){
+					_collection.insert(spost,function(err,inserted){
 						if(err){ kiel.response(req, res, {data : err}, 500); return;}
 						kiel.response(req, res, {data:inserted}, 200);
 						return;
@@ -86,7 +86,7 @@ structure = function(kiel){
 
 				db._instance().collection('comments',function(err,_collection) {
 					if(err){ kiel.response(req, res, {data : err}, 500); return;}
-					_collection.insert({_id:id,value:spost},function(err,inserted){
+					_collection.insert(spost,function(err,inserted){
 						if(err){ kiel.response(req, res, {data : err}, 500); return;}
 					
 						_collection.find({structure_id:req.post_args.structure_id},{rating:1}).toArray(function(err,c_data){
