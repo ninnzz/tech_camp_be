@@ -69,7 +69,7 @@ structure = function(kiel){
 				});	
 			} ,
 			comments : function(req,res) {
-				var rqrd = ['image','comment','rating','structure_id']
+				var rqrd = ['comment','rating','structure_id']
 					, rst
 					, spost = {};
 					// , id = kiel.utils.hash('structure'+dt.getTime()+kiel.utils.random());
@@ -79,7 +79,7 @@ structure = function(kiel){
 				}
 
 				spost['_id'] = kiel.utils.hash('structure'+dt.getTime()+kiel.utils.random());
-				spost['image'] = req.post_args.image;
+				req.post_args.image && (spost['image'] = req.post_args.image);
 				spost['comment'] = req.post_args.comment;
 				spost['structure_id'] = req.post_args.structure_id;
 				spost['rating'] = req.post_args.rating;
