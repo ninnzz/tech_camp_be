@@ -94,8 +94,11 @@ structure = function(kiel){
 							var s_rating = 0;
 							for(var i in c_data) {
 								s_rating += c_data[i].rating;
+								console.log(c_data[i].rating);
 							}
+							console.log(s_rating);
 							s_rating = s_rating/c_data.length;
+							console.log(s_rating);
 
 
 							db._instance().collection('structure',function(err,s_collection) {
