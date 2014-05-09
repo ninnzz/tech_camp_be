@@ -19,7 +19,7 @@ transactions = function(kiel){
 						if(err){ kiel.response(req, res, {data : err}, 500); return;}
 						if(data.length === 0)
 							kiel.response(req, res, {data:"Transaction record not found."}, 404);
-						kiel.response(req, res, {data:data}, 200);
+						kiel.response(req, res, {id:data[0]._id,value:JSON.parse(data[0].value)}, 200);
 						return;
 					});
 				});
