@@ -93,7 +93,7 @@ structure = function(kiel){
 							if(err){ kiel.response(req, res, {data : err}, 500); return;}
 							var s_rating = 0;
 							for(var i in c_data) {
-								s_rating += c_data[i].rating;
+								s_rating += c_data[i].rating*1;
 								console.log(c_data[i].rating);
 							}
 							console.log(s_rating);
