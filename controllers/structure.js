@@ -9,7 +9,7 @@ structure = function(kiel){
 			index : function(req,res){
 				var opt;
 
-				req.get_args.structure_id && opt = {_id:req.get_args.id};
+				req.get_args.id && (opt = {_id:req.get_args.id});
 
 				db._instance().collection('structure',function(err,_collection) {
 					if(err){ kiel.response(req, res, {data : err}, 500); return;}
