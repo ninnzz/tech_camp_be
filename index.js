@@ -1,3 +1,47 @@
+var app = require('express')(),
+    fs = require('fs'),
+    db = require(__dirname + "/helpers/ndb");
+
+app.use(require('body-parser')({uploadDir : '/var/tmp'}));
+app.post('/upload', function (req, res, next) {
+	var files = req.files.image,
+		length = files.length,
+		id = req.body.id,
+		filename = '',
+		count = 0;
+
+	if (!files) return res.send(400, {message : 'Image is missing'});
+	if (!id) return res.send(400, {message : 'ID is missing'});
+
+	files.forEach(ravengwapo);
+
+	function ravengwapo(file, index){
+		file.name = index + '-' + id;
+		filename += file.name + ',';
+		fs.readFile(file.path, function (err, data) {
+			if(err) return next(err);
+			fs.writeFile(__dirname + '/uploads/' + file.name, data, function () {
+				count++;
+				if (count === files.length) {
+					db._instance().collection('comments',function(err, _collection) {
+						if(err) return next(err);
+						_collection.update({_id : id}, {$set : {image : filename.substring(0, filename.length - 1)}}, function(err, updated){
+							if (err) return next(err);
+							res.send(200, {message : 'Upload successful'});
+						});
+					});
+				}
+			});
+		});
+	}
+});
+
+app.listen(8080);
+
+
+
+
+
 var env = "development";
 module.exports = process.env.DREAM_COV
   ? require('./lib-cov/kiel_auth')
