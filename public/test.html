@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sample</title>
+	 <script type="text/javascript" src="./geoxml3.js"></script>
+	 <script type="text/javascript"
+  		src="https://maps.googleapis.com/maps/api/js?libraries=geometry,places&sensor=false">
+	</script>
+</head>
+<body>
+	
+
+	 <script type="text/javascript">
+	   	var kml_parsed
+	   		, myParser
+	   		, check_point = function(poly, pt) {
+	   			for(var c = false, i = -1, l = poly.length, j = l - 1; ++i < l; j = i)
+					((poly[i].y <= pt.y && pt.y < poly[j].y) || (poly[j].y <= pt.y && pt.y < poly[i].y))
+					&& (pt.x < (poly[j].x - poly[i].x) * (pt.y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x)
+					&& (c = !c);
+				return c;
+	   		}
+	   		, check_hazard = function(poly, kml_map) {
+	   			var m_map = kml_map.placemarks
+	   				, bounds = [];
+				for(var idx in m_map) {
+					//change implementation later to facilitate not square polygons and objects
+					var pl = m_map[idx].polygon;
+					bounds.push({x:pl.bounds.Ba.j, y:pl.bounds.ra.j});
+					bounds.push({x:pl.bounds.Ba.j, y:pl.bounds.ra.k});
+					bounds.push({x:pl.bounds.Ba.k, y:pl.bounds.ra.k});
+					bounds.push({x:pl.bounds.Ba.k, y:pl.bounds.ra.j});
+					// console.log(bounds);
+					for(var p in poly) {
+						if(check_point(bounds,poly[p])) {
+							return {ok:false,hazard_zone:m_map[idx]};
+						}
+					}
+	   			}
+				return {ok:true};
+
+	   		};
+
+	   	var sample_poly = [
+	   		{x:14.540560, y:121.019342},
+	   		{x:14.415812, y:121.409741},
+	   		{x:14.413411, y:121.412182},
+	   		{x:14.412684, y:121.408802}
+	   	];
+		myParser = new geoXML3.parser({afterParse: function(doc) {
+			kml_parsed = doc;
+			var tst = check_hazard(sample_poly,kml_parsed[0]);
+			console.log(tst)
+		}});
+	    myParser.parse('http://localhost/~ninz/tech_camp/public/sample.kml');
+
+
+	   //  var parsed_kml = []
+	   //  	, myParser = new geoXML3.parser({map: <map_object_here>,afterParse:function(doc){
+	   //  		parsed_kml = doc;	
+	   //  	}})
+	   //  	, check_point = function(poly, pt) {
+	   // 			for(var c = false, i = -1, l = poly.length, j = l - 1; ++i < l; j = i)
+				// 	((poly[i].y <= pt.y && pt.y < poly[j].y) || (poly[j].y <= pt.y && pt.y < poly[i].y))
+				// 	&& (pt.x < (poly[j].x - poly[i].x) * (pt.y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x)
+				// 	&& (c = !c);
+				// return c;
+	   // 		}
+	   // 		, check_hazard = function(poly, kml_map) {
+	   // 			var m_map = kml_map.placemarks
+	   // 				, bounds = [];
+				// for(var idx in m_map) {
+				// 	//change implementation later to facilitate not square polygons and objects
+				// 	var pl = m_map[idx].polygon;
+				// 	bounds.push({x:pl.bounds.Ba.j, y:pl.bounds.ra.j});
+				// 	bounds.push({x:pl.bounds.Ba.j, y:pl.bounds.ra.k});
+				// 	bounds.push({x:pl.bounds.Ba.k, y:pl.bounds.ra.k});
+				// 	bounds.push({x:pl.bounds.Ba.k, y:pl.bounds.ra.j});
+				// 	// console.log(bounds);
+				// 	for(var p in poly) {
+				// 		if(check_point(bounds,poly[p])) {
+				// 			return {ok:false,hazard_zone:m_map[idx]};
+				// 		}
+				// 	}
+	   // 			}
+				// return {ok:true};
+
+	   // 		};
+    // 		myParser.parse('my_geodata.kml'); //accepts kml file or array of kml files
+
+	   
+  	</script>
+
+</body>
+</html>
