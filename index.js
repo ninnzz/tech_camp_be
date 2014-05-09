@@ -1,8 +1,10 @@
 var app = require('express')(),
+	multer = require('multer'),
     fs = require('fs'),
     db = require(__dirname + "/helpers/ndb");
 
 app.use(require('body-parser')({uploadDir : '/var/tmp'}));
+app.use(multer({dest:'/var/tmp/'});
 app.post('/upload', function (req, res, next) {
 	var files = req.files.image,
 		length = files.length,
