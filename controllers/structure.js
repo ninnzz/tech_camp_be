@@ -105,7 +105,7 @@ structure = function(kiel){
 								if(err){ kiel.response(req, res, {data : err}, 500); return;}
 								s_collection.update({_id:req.post_args.structure_id}, {'$set':{rating:s_rating}},function(er,updated) {
 									if(er){ kiel.response(req, res, {data : err}, 500); return;}
-									kiel.response(req, res, {data:"Success"}, 200);
+									kiel.response(req, res, {data:"Success", id : spost['_id']}, 200);
 									return;
 								});
 							});
