@@ -11,7 +11,8 @@ app.post('/upload', function (req, res, next) {
 		id = req.body.id,
 		filename = '',
 		count = 0;
-
+	
+	!(files instanceof Array) && (files = [files]);
 	if (!files) return res.send(400, {message : 'Image is missing'});
 	if (!id) return res.send(400, {message : 'ID is missing'});
 
