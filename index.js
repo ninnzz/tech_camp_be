@@ -1,8 +1,9 @@
-var app = require('express')(),
+var express = require('express'),
+	app = express(),
 	multer = require('multer'),
     fs = require('fs'),
     db = require(__dirname + "/helpers/ndb");
-
+app.use(express.static(__dirname+'/uploads'));
 app.use(require('body-parser')({uploadDir : '/var/tmp'}));
 app.use(multer({dest:'/var/tmp/'}));
 app.post('/upload', function (req, res, next) {
@@ -25,7 +26,7 @@ app.post('/upload', function (req, res, next) {
 
 	function ravengwapo(file, index){
 		file.name = index + '-' + file.name;
-		filename += 'http://ec2-54-214-176-172.us-west-2.compute.amazonaws.com/uploads/' + file.name + ',';
+		filename += 'http://ec2-54-214-176-172.us-west-2.compute.amazonaws.com:8080/' + file.name + ',';
 		fs.readFile(file.path, function (err, data) {
 			if(err) return next(err);
 			fs.writeFile(__dirname + '/uploads/' + file.name, data, function (err) {
