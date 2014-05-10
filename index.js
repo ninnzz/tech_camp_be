@@ -14,10 +14,13 @@ app.post('/upload', function (req, res, next) {
 	
 	!(files instanceof Array) && (files = [files]);
 	if (!files) return res.send(400, {message : 'Image is missing'});
+	if (files.length === 0) return res.send(400, {message : '0 Image found'});
 	if (!id) return res.send(400, {message : 'ID is missing'});
 
 	length = files.length;
-	
+
+	console.dir(files);
+
 	files.forEach(ravengwapo);
 
 	function ravengwapo(file, index){
