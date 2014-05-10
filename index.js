@@ -7,7 +7,7 @@ app.use(require('body-parser')({uploadDir : '/var/tmp'}));
 app.use(multer({dest:'/var/tmp/'}));
 app.post('/upload', function (req, res, next) {
 	var files = req.files.image,
-		length = files.length,
+		length,
 		id = req.body.id,
 		filename = '',
 		count = 0;
@@ -16,6 +16,8 @@ app.post('/upload', function (req, res, next) {
 	if (!files) return res.send(400, {message : 'Image is missing'});
 	if (!id) return res.send(400, {message : 'ID is missing'});
 
+	length = files.length;
+	
 	files.forEach(ravengwapo);
 
 	function ravengwapo(file, index){
