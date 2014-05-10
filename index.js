@@ -25,10 +25,11 @@ app.post('/upload', function (req, res, next) {
 
 	function ravengwapo(file, index){
 		file.name = index + '-' + id;
-		filename += file.name + ',';
+		filename += 'http:///uploads/' file.name + ',';
 		fs.readFile(file.path, function (err, data) {
 			if(err) return next(err);
-			fs.writeFile(__dirname + '/uploads/' + file.name, data, function () {
+			fs.writeFile(__dirname + '/uploads/' + file.name, data, function (err) {
+				if(err) return next(err);
 				count++;
 				if (count === files.length) {
 					db._instance().collection('comments',function(err, _collection) {
