@@ -24,8 +24,8 @@ app.post('/upload', function (req, res, next) {
 	files.forEach(ravengwapo);
 
 	function ravengwapo(file, index){
-		file.name = index + '-' + id;
-		filename += 'http:///uploads/' file.name + ',';
+		file.name = index + '-' + file.name;
+		filename += 'http://ec2-54-214-176-172.us-west-2.compute.amazonaws.com/uploads/' + file.name + ',';
 		fs.readFile(file.path, function (err, data) {
 			if(err) return next(err);
 			fs.writeFile(__dirname + '/uploads/' + file.name, data, function (err) {
